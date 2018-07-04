@@ -12,27 +12,27 @@ Module.register("compliments", {
 	defaults: {
 		compliments: {
 			anytime: [
-				"Hey there sexy!"
+				"你好，亲爱的!"
 			],
 			morning: [
-				"Good morning, handsome!",
-				"Enjoy your day!",
-				"How was your sleep?"
+				"早上好~",
+				"今天心情好!",
+				"睡得怎么样?"
 			],
 			afternoon: [
-				"Hello, beauty!",
-				"You look sexy!",
-				"Looking good today!"
+				"你好，美女❤️!",
+				"你看上去美美哒!",
+				"自我欣赏!"
 			],
 			evening: [
-				"Wow, you look hot!",
-				"You look nice!",
-				"Hi, sexy!"
+				"今天不错!",
+				"晚安 Zzz",
+				"快该睡觉了!"
 			]
 		},
-		updateInterval: 30000,
+		updateInterval: 10000,
 		remoteFile: null,
-		fadeSpeed: 4000,
+		fadeSpeed: 3000,
 		morningStartTime: 3,
 		morningEndTime: 12,
 		afternoonStartTime: 12,
@@ -55,8 +55,8 @@ Module.register("compliments", {
 
 		var self = this;
 		if (this.config.remoteFile != null) {
-			this.complimentFile(function(response) {
-				self.config.compliments = JSON.parse(response);
+			this.complimentFile((response) => {
+				this.config.compliments = JSON.parse(response);
 				self.updateDom();
 			});
 		}
@@ -128,11 +128,9 @@ Module.register("compliments", {
 	 * Retrieve a file from the local filesystem
 	 */
 	complimentFile: function(callback) {
-		var xobj = new XMLHttpRequest(),
-			isRemote = this.config.remoteFile.indexOf("http://") === 0 || this.config.remoteFile.indexOf("https://") === 0,
-			path = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
+		var xobj = new XMLHttpRequest();
 		xobj.overrideMimeType("application/json");
-		xobj.open("GET", path, true);
+		xobj.open("GET", this.file(this.config.remoteFile), true);
 		xobj.onreadystatechange = function() {
 			if (xobj.readyState == 4 && xobj.status == "200") {
 				callback(xobj.responseText);
